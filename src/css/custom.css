@@ -1,0 +1,89 @@
+/*custom scrollbar*/
+/*---------------*/
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #AAB2BD; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #656D78; 
+}
+/*-----------------*/
+.nopadding{
+	padding:0 0 0 0;
+}
+p.paddings{	
+	margin-right:-150px;
+}
+p{
+	margin-bottom:10px;
+}
+.masthead{
+	position:relative;
+	padding-top:125px;
+}
+
+.dropdown-menu li a{
+	color:#000 !important;
+}
+
+h3.panel-title{
+	padding-top: 25px;
+	padding-bottom: 0px;
+	margin-bottom:0px;
+}
+.panel{
+	border-radius:9px 9px 7px 7px;
+	margin-top:25px;
+	background-color:rgba(255, 255, 255, 0.1) ;
+
+}
+.panel-primary{
+	padding-right:15px;
+	padding-left:15px;
+}
+.panel-monthly{
+	padding-left:15px;
+	padding-right: 15px;
+}
+.panel-heading{
+	border-radius:7px 7px 0px 0px;
+	background:linear-gradient(15deg, #aaa, #888, #666);
+	padding-bottom:25px;
+}
+.fixed-height{
+	overflow-y:auto;
+	overflow-x:hidden;
+	height:400px;
+}
+.text-danger{
+	color:red;
+}
+.text-success{
+	color:#090;
+}
+
+.tablepadding{
+
+}
+.manoj{
+	float:none;
+	margin: 0 auto;
+}
+.centree{
+    margin:auto;
+    width: 450px;
+
+
+}

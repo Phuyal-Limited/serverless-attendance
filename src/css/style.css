@@ -1,0 +1,339 @@
+.body{
+    background: #00867d;
+}
+.register-page{
+	width: 360px;
+	/*padding:10% 0 0;*/
+	margin:auto;
+	display: inline-block;
+	z-index: 1;
+
+
+}
+.login-page {
+    width: 500px;
+    padding: 10% 0 0;
+    margin: auto;
+
+}
+/*.login-page:hover,.login-page:active,.register-page:hover{
+  -moz-transform: scale(2);
+  -webkit-transform: scale(2);
+  transform: scale(1.1);
+}*/
+.form{
+	position:relative;
+	z-index:1;
+	/*background:rgba(7, 10, 198, 0.8);*/
+
+	max-width: 100%;
+	margin: 0 auto 100px;
+	padding:45px;
+	text-align:center;
+}
+
+.form input{
+	font-family: "Bebas Neue",sans-serif;
+	outline: 1px;
+	background: #ffffff;
+	width: 100%;
+	border: 0;
+	margin: 0 0 15px;
+	padding: 15px;
+	box-sizing: border-box;
+	font-size: 14px;
+	z-index: auto;
+}
+
+.form button{
+	font-family: "Roboto",sans-serif;
+	text-transform: uppercase;
+	outline: 0;
+	background: #2d5e44;
+	width: 100%;
+	border: 0;
+	padding: 15px;
+	color: #FFFFFF;
+	font-size: 14px;
+	cursor: pointer;
+}
+.form select{
+	font-family: "Roboto",sans-serif;
+	outline: 1px;
+	background: #f2f2f2;
+	width: 100%;
+	border: 0;
+	margin: 0 0 15px;
+	padding: 15px;
+	box-sizing: border-box;
+	font-size: 14px;
+}
+
+.form button:hover,.form button:active{
+	color: #c850c0;
+   }
+
+
+.message{
+	font-family: "Roboto",sans-serif;
+	margin: 15px 0 0;
+	color: aliceblue;
+	font-size: 20px;
+	padding:10px;
+}
+.messagedate{
+	font-family: "Roboto",sans-serif;
+
+	border: 0;
+	width: 25%;
+	padding: 10px;
+	font-size: 24px;
+	z-index: auto;
+}
+.messagered{
+	font-family: "Roboto",sans-serif;
+	margin: 15px 0 0;
+	font-size: 18px;
+	padding:10px;
+    color: #FF0000;
+}
+.menu{
+	width:100%;
+    height: auto;
+	background-color: #4CAF50;
+	overflow: auto;
+}
+.menu ul{
+	margin: 0;
+	padding:0;
+	list-style: none;
+	line-height: 60px;
+
+}
+
+.menu li{
+	text-transform: uppercase;
+    font-family: "Roboto",sans-serif;
+	float: right;
+    margin-left: 0px;
+    color: #ffffff;
+}
+.menu ul li a{
+	text-decoration: none;
+	width: 130px;
+	display: block;
+	text-align: center;
+	color: #f2f2f2;
+	font-size: 18px;
+
+}
+.menu li a:hover{
+	color:#c850c0;
+	opacity: 0.5;
+	font-size: 19px;
+	cursor: pointer;
+}
+.searchform{
+    display: inline-block;
+	margin-top:15px;
+	float: right;
+	margin-right:50px;
+}
+.searchform label {
+    float: left;
+    margin: 0 0 5px 0;
+}
+
+.menu input{
+	padding: 7px;
+	border: none;
+	font-size:16px;
+	font-family: "Roboto", sans-serif;
+}
+
+.menu button{
+	float: right;
+	background: #4CAF00;
+	color: white;
+	border-radius: 0 5px 5px 0;
+	cursor: pointer;
+	position: sticky;
+	padding: 7px;
+	font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    border: none;
+}
+.menu button:hover,.menu button:active{
+	color: #c850c0;
+   }
+
+.table-responsive{
+    font-family: "Roboto", sans-serif;
+    padding-top: 0px;
+    margin-top: 20px;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+	width: 50%;
+}
+.table-responsive thead{
+    font-size: 18px;
+
+}
+.rowC{
+    display: inline-block;
+
+
+}
+.sidebyside{
+	display:flex;
+	flex-direction:row;
+	height: 50px;
+	margin-left: 30px;
+
+}
+.details h3{
+    text-align: center;
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+    color: #FFFFFF;
+}
+.searchanddate{
+	width: 50%;
+}
+.wholediv{
+    background:#00867d;
+}
+.link{
+    color: #ffffff;
+}
+.link:hover{
+	color: #c850c0;
+	opacity: 0.5;
+	font-size: 15px;
+}
+.manojbutton{
+    font-family: "Roboto",sans-serif;
+	text-transform: uppercase;
+	outline: 0;
+	background: #2d5e44;;
+	width: 25%;
+	border: 0;
+	padding: 15px;
+	color: #FFFFFF;
+	font-size: 14px;
+	cursor: pointer;
+    position: absolute;
+    left: 50%;
+    right: 50%;
+
+}
+.sebutton {
+	font-family: "Roboto", sans-serif;
+	text-transform: uppercase;
+	outline: 0;
+	background: #2d5e44;;
+
+	border: 0;
+	padding: 10px;
+	color: #FFFFFF;
+	font-size: 14px;
+}
+.sebutton:hover,.sebutton:active{
+	color: #c850c0;
+   }
+.seinput{
+	font-family: "Bebas Neue",sans-serif;
+	outline: 1px;
+	background: #f2f2f2;
+    margin-top: 10px;
+	border: 0;
+	width: auto;
+	padding: 10px;
+	box-sizing: border-box;
+	font-size: 18px;
+	z-index: auto;
+	height: 50px;
+	border-radius: 5px;
+}
+.semessage{
+	font-family: "Roboto",sans-serif;
+	margin-top: 10px;
+	color: aliceblue;
+	font-size: 18px;
+	padding:10px;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+.clock{
+	width: auto;
+	height: auto;
+	float: right;
+}
+.nava{
+	width:100%;
+	height: auto;
+	overflow: auto;
+	background-color: #2d5e44;
+}
+.nava img{
+	width: 90px;
+	height: 90px;
+	left:50%;
+	right:50%;
+	align-content: center;
+	display: block;
+   	margin-left: auto;
+   	margin-right: auto;
+
+    margin-top: 10px;
+}
+.nav ul{
+	margin: 0;
+	padding:0;
+	list-style: none;
+	line-height: 60px;
+	width: 100%;
+	align-content: center;
+	display: block;
+   	margin-left: auto;
+   	margin-right: auto;
+
+
+}
+.nav ul li a{
+	text-decoration: none;
+	width: 130px;
+	display: block;
+	text-align: center;
+	color: #4caf00;
+	font-size: 18px;
+	font-family: "Roboto",sans-serif;
+
+
+
+}
+.nav li{
+	text-transform: uppercase;
+    font-family: "Roboto",sans-serif;
+	float: right;
+    margin-left: 0px;
+    color: #ffffff;
+    display: inline;
+	font-size: 18px;
+
+
+
+}
+.nav li a:hover{
+	color: #3fc827;
+	opacity: 0.5;
+	font-size: 19px;
+	cursor: pointer;
+}

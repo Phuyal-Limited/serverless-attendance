@@ -4,6 +4,7 @@ import { Redirect} from 'react-router-dom'
 import '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
 import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
 import '../../HomeTemplate/css/grayscale.min.css';
+
 import '../../css/custom.css';
 
 
@@ -125,6 +126,12 @@ class NavBar extends Component {
                                         Dashboard
                                     </a>
                                 </li>
+
+                                    <li className="nav-item">
+                                        <a className="nav-link js-scroll-trigger" href="#calendar">
+                                            Calendar
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

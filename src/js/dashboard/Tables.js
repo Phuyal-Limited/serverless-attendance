@@ -115,7 +115,8 @@ class Tables extends React.Component {
     }
 
     //Function to change integer month value to string month value.
-    getThisMonth(m) {
+    getThisMonth(m)
+    {
         if (m === 1) {
             return ("January");
         }
@@ -412,10 +413,7 @@ class Tables extends React.Component {
                         <div className="row">
                             <div className="col-md-3">
                                 <div className="clock">
-                                <iframe
-                                    title="kathmandu"
-                                    src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=en&size=small&timezone=Asia%2FKathmandu"
-                                    position="absolute" frameborder="0" seamless>Kathmandu</iframe>
+
                                 </div>
                             </div>
                         </div>

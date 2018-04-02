@@ -17,6 +17,7 @@ import RegisterEmployee from './js/register/registeremployee'
 
 import EmployeeProfile from './js/profile/employeeprofile'
 import CompanyProfile from './js/profile/companyprofile'
+import Calendar from './js/dashboard/newcal'
 
 
 
@@ -47,7 +48,7 @@ ReactDOM.render(
                 <Route exact path="/login/company" component={AdminLogin}/>
                 <Route exact path="/register/company" component={RegisterCompany}/>
                 <Route exact path="/passwordreset" component={PasswordReset}/>
-
+                <Route exact path='/calendar' component={Calendar}/>
                 <PrivateRouteEmployee exact path="/profile/employee" component={EmployeeProfile}/>
                 <PrivateRoute exact path="/profile/company" component={CompanyProfile}/>
                 <PrivateRoute exact path='/dashboard/company' component={AdminDashboard}/>

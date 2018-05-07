@@ -1,13 +1,14 @@
 import axios from "axios/index";
 import React, {Component} from "react";
-import { cognitoidentityserviceprovider } from "../aws_profile";
-import NavBar from "../navbar/loggedinnavbar";
-
-import '../../css/style.css';
-import  '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css'
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
-import '../../css/custombootstrap.css';
+import { cognitoidentityserviceprovider } from "../../aws_profile";
+import NavBar from "../navbar/adminloggedinnavbar";
+//import {withRouter} from "react-router-dom";
+import {COMPANY_API_URL} from "../../../config";
+import '../../../css/style.css';
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
+import '../../../css/custombootstrap.css';
 
 
 let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
@@ -36,9 +37,9 @@ class RegisterEmployee extends Component {
         this.setState({[event.target.name]: event.target.value})
     }
     handleInputChange(event){
-        var file = this.refs.file.files[0];
+        //var file = this.refs.file.files[0];
         var reader = new FileReader();
-        var url = reader.readAsDataURL(file);
+        //var url = reader.readAsDataURL(file);
 
         reader.onloadend = function (e) {
             var img=reader.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
@@ -50,7 +51,7 @@ class RegisterEmployee extends Component {
 
             });
         }.bind(this);
-        console.log(url) // Would see a path?
+        //console.log(url) // Would see a path?
         // TODO: concat files
 
     }
@@ -126,14 +127,16 @@ class RegisterEmployee extends Component {
                 info:'Please Wait',
                 forLoader:[<div className="loader"></div>]
             });
-            axios.get(API_URL, {
-
+            axios.get(COMPANY_API_URL, {
+                headers:{
+                    token: localStorage.getItem('companyIdToken')
+                },
                 params : {
-                    addNewIntern: "registeremployee",
-                    y: this.state.fullname,
-                    u: this.state.username+" "+this.state.position+" "+this.state.department,
-                    p: this.state.email,
-                    t: localStorage.getItem("adminname")
+                    param1: "RegisterEmployee",
+                    param2: this.state.fullname,
+                    param3: this.state.username+" "+this.state.position+" "+this.state.department,
+                    param4: this.state.email,
+                    param5: localStorage.getItem("adminname")
                 }
             })
                 .then(response => {
@@ -169,16 +172,16 @@ class RegisterEmployee extends Component {
                             });
                     }
                     else{
-                        console.log(response.data)
+                        //console.log(response.data)
                         this.setState({
                             info:response.data
                         })
                     }
                 })
                 .catch(error => {
-                    this.setState({
-                        info:error.toString()
-                    })
+                    localStorage.clear()
+                    alert("Your Session Expired! Log in again...")
+                    this.props.history.push('/login/company')
 
                 });
         }

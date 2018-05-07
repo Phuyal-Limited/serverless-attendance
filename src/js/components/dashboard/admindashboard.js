@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import NavBar from '../navbar/loggedinnavbar';
+import NavBar from '../navbar/adminloggedinnavbar';
 
-import Tables from './Tables'
+import Tables from './admintables'
 
 
 class AdminDashboard extends Component {

@@ -4,7 +4,7 @@ import axios from "axios/index";
 import {CognitoUserAttribute, CognitoUserPool} from 'amazon-cognito-identity-js';
 import {withRouter} from 'react-router-dom';
 
-import '../../css/style.css';
+import '../../../css/style.css';
 
 let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
 class RegisterCompany extends Component{
@@ -35,7 +35,7 @@ class RegisterCompany extends Component{
                 this.setState({
                     adminids: response.data.toString()
                 });
-                console.log(this.state.adminids)
+                //console.log(this.state.adminids)
                 p=this.state.adminids.split(",");
                 const adminPool={
                     UserPoolId: p[0].replace(/\s+/, ""),
@@ -251,6 +251,14 @@ class RegisterCompany extends Component{
                                                 <span className="network-name">Register</span>
                                             </button>
                                         </li>
+                                        <li className="list-inline-item" style={{margin: 10, padding: 10, paddingLeft: 20, borderRadius: 10, width: 350}}>
+                                            <button href="#"
+                                                    className="btn btn-default btn-lg"
+                                            >
+                                                <i className="fa fa-crosshairs" />
+                                                <span className="network-name"> Cancel </span>
+                                            </button>
+                                        </li><br/>
                                     </form>
                                     <h1 className="message">{this.state.info}</h1>
                                 </div>

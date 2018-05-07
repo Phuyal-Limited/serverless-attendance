@@ -1,4 +1,10 @@
 import 'amazon-cognito-js'
+<<<<<<< HEAD
+
+let AWS = require('aws-sdk');
+const REGION = "eu-west-2"
+
+=======
 //import axios from "axios/index";
 
 let AWS = require('aws-sdk');
@@ -37,6 +43,7 @@ const REGION = "eu-west-2"
 
     }
 }*/
+>>>>>>> 4a45f49ac39b1d9e973138e649b205059ee1eada
 
 const configdata = {
     region: REGION

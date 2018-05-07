@@ -1,15 +1,13 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import axios from "axios/index";
-import NavBar from '../navbar/loggedinnavbar'
-
-import '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
-import '../../css/custom.css';
-import '../../css/loader.css'
-
-let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
+import NavBar from '../navbar/adminloggedinnavbar'
+import {COMPANY_API_URL} from "../../../config";
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
+import '../../../css/custom.css';
+import '../../../css/loader.css'
 
 class CompanyProfile extends Component{
     constructor(props){
@@ -20,10 +18,13 @@ class CompanyProfile extends Component{
         }
     }
     componentDidMount(){
-        axios.get(API_URL, {
+        axios.get(COMPANY_API_URL, {
+            headers:{
+                token: localStorage.getItem('companyIdToken')
+            },
             params : {
-                addNewIntern: "CompanyProfile",
-                u: localStorage.getItem("adminname")
+                param1: "CompanyProfile",
+                param2: localStorage.getItem("adminname")
             }
         })
             .then(response => {
@@ -39,9 +40,11 @@ class CompanyProfile extends Component{
 
             })
             .catch(error => {
-                this.setState({
-                    info: error.toString()
-                });
+                if(error['message']==="Network Error") {
+                    localStorage.clear()
+                    alert("Your session has expired! Log in again...")
+                    this.props.history.push('/login/company')
+                }
             });
 
     }

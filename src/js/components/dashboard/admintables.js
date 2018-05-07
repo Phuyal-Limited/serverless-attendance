@@ -1,13 +1,14 @@
 import React from "react";
 import axios from "axios/index";
 
-import '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
-import '../../css/custom.css';
-import '../../css/loader.css'
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
+import '../../../css/custom.css';
+import '../../../css/loader.css'
+import {withRouter} from "react-router-dom";
+import {COMPANY_API_URL} from "../../../config";
 
-let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
 
 
 class Tables extends React.Component {
@@ -115,8 +116,7 @@ class Tables extends React.Component {
     }
 
     //Function to change integer month value to string month value.
-    getThisMonth(m)
-    {
+    getThisMonth(m) {
         if (m === 1) {
             return ("January");
         }
@@ -159,15 +159,17 @@ class Tables extends React.Component {
     requestToApi(date) {
         this.setState({
             daily: true,
-            dateDisplayField: "..."
+            dateDisplayField: "...",
+            absentDateDisplayField:'...'
         });
-        axios.get(API_URL, {
+        axios.get(COMPANY_API_URL, {
+            headers:{
+                token: localStorage.getItem("companyIdToken")
+            },
             params: {
-                addNewIntern: "AdminLogin",
-                y: date,
-                u: 'admin',
-                p: 'youshallnotpass',
-                t: localStorage.getItem("adminname")
+                param1: "AdminLogin",
+                param2: date,
+                param3: localStorage.getItem("adminname")
             }
         })
             .then(response => {
@@ -195,9 +197,11 @@ class Tables extends React.Component {
                 }
             })
             .catch(error => {
-                this.setState({
-                    displayText: "Request failed"
-                });
+                if(error['message']==="Network Error") {
+                    localStorage.clear()
+                    alert("Your session has expired! Log in again...")
+                    this.props.history.push('/login/company')
+                }
             });
     }
 
@@ -211,13 +215,14 @@ class Tables extends React.Component {
         this.setState({
             monthDisplayField: "..."
         });
-        axios.get(API_URL, {
+        axios.get(COMPANY_API_URL, {
+            headers:{
+                token:localStorage.getItem('companyIdToken')
+            },
             params: {
-                addNewIntern: "Monthly",
-                y: d,
-                u: 'admin',
-                p: 'youshallnotpass',
-                t: localStorage.getItem("adminname")
+                param1: "Monthly",
+                param2: d,
+                param3: localStorage.getItem("adminname")
             }
         })
             .then(response => {
@@ -244,9 +249,11 @@ class Tables extends React.Component {
                 }
             })
             .catch(error => {
-                this.setState({
-                    displayText: "Request failed"
-                });
+                if(error['message']==="Network Error") {
+                    localStorage.clear()
+                    alert("Your session has expired! Log in again...")
+                    this.props.history.push('/login/company')
+                }
             });
     }
 
@@ -331,6 +338,8 @@ class Tables extends React.Component {
                             <td style={{color: '#00FF00'}}>{this.state.info['present'][b]}</td>
                             <td>{this.state.info['entry_time'][b]}</td>
                             <td>{this.state.info['exit_time'][b]}</td>
+                            <td>{this.state.info['entrystatus'][b]}</td>
+                            <td>{this.state.info['workduration'][b]}</td>
                         </tr>
                     );
                 }
@@ -344,6 +353,8 @@ class Tables extends React.Component {
                             <td style={{color: '#FF0000'}}>{this.state.info['present'][b]}</td>
                             <td>{this.state.info['entry_time'][b]}</td>
                             <td>{this.state.info['exit_time'][b]}</td>
+                            <td>{this.state.info['entrystatus'][b]}</td>
+                            <td>{this.state.info['workduration'][b]}</td>
                         </tr>
                     );
                     absentToday.push(
@@ -398,6 +409,7 @@ class Tables extends React.Component {
                         <td>{j + 1}</td>
                         <td><a className="link">{this.state.monthlyinfo['names'][j]}</a></td>
                         <td>{total_working_days}</td>
+                        <td>{this.state.monthlyinfo['payroll'][j]}</td>
                         <td>{this.state.monthlyinfo['present'][j]}</td>
                         <td>{this.state.monthlyinfo['absent'][j]}</td>
                     </tr>
@@ -431,7 +443,7 @@ class Tables extends React.Component {
                                 />
                             </div>
                             <div className="row">
-                                <div className="col-md-6">
+                                <div className="col-md-8">
                                     <div className="panel panel-primary">
                                         <div className="panel-heading">
                                             <h3 className="panel-title">Daily Records</h3>
@@ -447,6 +459,8 @@ class Tables extends React.Component {
                                                             <th>Status</th>
                                                             <th>Entry</th>
                                                             <th>Exit</th>
+                                                            <th>EntryStatus</th>
+                                                            <th>Duration</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -461,10 +475,10 @@ class Tables extends React.Component {
                                     <p>{this.state.dateDisplayField}</p>
 
                                 </div>
-                                <div className="col-md-6 manoj">
+                                <div className="col-md-4">
                                     <div className="panel panel-monthly">
                                         <div className="panel-heading">
-                                            <h3 className="panel-title">Absentees for the day</h3>
+                                            <h3 className="panel-title">Absentees</h3>
                                         </div>
                                         <div className="panel-body fixed-height">
                                             <div className="row">
@@ -514,6 +528,7 @@ class Tables extends React.Component {
                                                         <th>ID</th>
                                                         <th>EmployeeName</th>
                                                         <th>Total</th>
+                                                        <th>Payroll Days</th>
                                                         <th>Present</th>
                                                         <th>Absent</th>
                                                     </tr>
@@ -537,4 +552,4 @@ class Tables extends React.Component {
     }
 }
 
-export default Tables;
+export default withRouter(Tables);

@@ -3,7 +3,11 @@ import '../vendor/bootstrap/css/bootstrap.min.css';
 import '../vendor/font-awesome/css/font-awesome.min.css';
 import '../css/grayscale.min.css';
 import logo from '../../logo.png'
+<<<<<<< HEAD
+import Navbar from '../../js/components/navbar/homepagenavbar';
+=======
 import Navbar from '../../js/navbar/homepagenavbar';
+>>>>>>> 4a45f49ac39b1d9e973138e649b205059ee1eada
 import '../../css/custombootstrap.css';
 
 class HomePage extends React.Component {

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
 
 
 class NavBar extends Component {
@@ -14,7 +14,7 @@ class NavBar extends Component {
                     id="mainNav"
                 >
                     <div className="container">
-                        <a className="navbar-brand js-scroll-trigger" href="">
+                        <a className="navbar-brand js-scroll-trigger" href="http://phuyal.co.uk/">
                             Phuyal Limited
                         </a>
                         <button

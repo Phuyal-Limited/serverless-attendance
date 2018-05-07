@@ -5,9 +5,9 @@ import React, {Component} from "react";
 import {AuthenticationDetails, CognitoUser, CognitoUserPool} from "amazon-cognito-identity-js";
 
 import {NavLink, withRouter} from 'react-router-dom';
-import '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
 
 import NavBar from '../navbar/homepagenavbar';
 
@@ -40,7 +40,7 @@ class AdminLogin extends Component {
                 this.setState({
                     adminids: response.data.toString()
                 });
-                console.log(this.state.adminids)
+                //console.log(this.state.adminids)
                 p=this.state.adminids.split(",");
                 const adminPool={
                     UserPoolId: p[0].replace(/\s+/, ""),
@@ -108,33 +108,46 @@ class AdminLogin extends Component {
 
                 var authenticationDetails = new AuthenticationDetails(authenticationData);
 
+                try{
+                    const adminUserPool = new CognitoUserPool(this.state.id)
+                    var userData = {
+                        Username: username,
+                        Pool: adminUserPool
+                    };
+                    var cognitoUser = new CognitoUser(userData);
+                    cognitoUser.authenticateUser(authenticationDetails, {
+                        onSuccess: function (result) {
+                            //console.log('access token + ' + result.getAccessToken().getJwtToken());
+                            /*Use the idToken for Logins Map when Federating User Pools with Cognito Identity or when passing through an Authorization Header to an API Gateway Authorizer*/
+                            //console.log('idToken + ' + result.idToken.jwtToken);
+                            //console.log('refresh token - '+result.getRefreshToken().getToken())
+                            //console.log(result);
+                            localStorage.setItem("companyAccessToken", result.getAccessToken().getJwtToken());
+                            localStorage.setItem("companyIdToken", result.idToken.jwtToken);
 
-                const adminUserPool = new CognitoUserPool(this.state.id);
-                var userData = {
-                    Username: username,
-                    Pool: adminUserPool
-                };
-                var cognitoUser = new CognitoUser(userData);
-                cognitoUser.authenticateUser(authenticationDetails, {
-                    onSuccess: function (result) {
-                        console.log('access token + ' + result.getAccessToken().getJwtToken());
-                        /*Use the idToken for Logins Map when Federating User Pools with Cognito Identity or when passing through an Authorization Header to an API Gateway Authorizer*/
-                        console.log('idToken + ' + result.idToken.jwtToken);
-                        console.log(result);
+                            res({result})
+                        },
 
-                        res({result})
-                    },
+                        onFailure: function (err) {
 
-                    onFailure: function (err) {
+                            console.log(err);
+                            rej(err)
+                        },
 
-                        console.log(err);
-                        rej(err)
-                    },
+                    });
+                }
+                catch(err){
+                    this.setState({
+                        info:"Slow Connection. Try Again."
+                    })
+                }
 
-                });
-            }, 3000);
+            }, 5000);
 
+        }).catch(error => {
+            alert('Error')
         });
+
         return p;
     }
     handleSubmit(event){
@@ -177,45 +190,10 @@ class AdminLogin extends Component {
             })
 
 
-        /*axios.get(ADMIN_LOGIN, {
-            params: {
-                u: this.state.username.replace(/ /g, ''),
-                p: this.state.password,
-                c: localStorage.getItem("Cookie")
-            }
-        })
-            .then(response => {
-
-                let ma=JSON.stringify(response.data);
-                var m=ma.replace(/\\/g, '');
-                var j=m.slice(1,-1)
-                var md=JSON.parse(j);
-                let key=Object.keys(md);
-                if(key[0]==="cookie"){
-                    localStorage.setItem('Cookie', md[key[0]]);
-                    this.setState({
-                        info: "Login Successful..Please Wait.."
-                    });
-                    setTimeout(() => {
-                        this.props.stateToAdmin();
-                    }, 2000);
-                }
-                else{
-                    this.setState({
-                        info: md[key[0]]
-                    });
-
-                }
-            })
-            .catch(error => {
-                this.setState({
-                    //info: "Request failed"
-                    info:error.toString()
-                });
-            });*/
     }
     render(){
         let submit=this.handleSubmit.bind();
+
         return (
             <div>
                 <NavBar/>
@@ -228,7 +206,6 @@ class AdminLogin extends Component {
                                         <h3>Company Login</h3>
                                         <input
                                             type="text"
-
                                             name="username"
                                             value={this.state.username}
                                             onChange={(event) => this.handleChange(event)}
@@ -260,7 +237,6 @@ class AdminLogin extends Component {
                     </div>
                 </header>
             </div>
-
         );
     }
 }

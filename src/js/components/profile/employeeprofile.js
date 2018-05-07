@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import axios from "axios/index";
 import NavBar from '../navbar/loggedinnavbar'
-
-let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
+import {EMPLOYEE_API_URL} from "../../../config";
+//let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
 
 class EmployeeProfile extends Component{
     constructor(props){
@@ -14,14 +14,17 @@ class EmployeeProfile extends Component{
     }
 
     componentDidMount(){
-        axios.get(API_URL, {
+        axios.get(EMPLOYEE_API_URL, {
+            headers:{
+                token: localStorage.getItem('idToken')
+            },
             params : {
-                addNewIntern: "EmployeeProfile",
-                u: localStorage.getItem("employeename")
+                param1: "EmployeeProfile",
+                param2: localStorage.getItem("employeename")
             }
         })
             .then(response => {
-                console.log(response.data)
+                //console.log(response.data)
                 var rfinal = "{" + response.data + "}";
                 var m = rfinal.replace(/'/g, '"');
                 var final = JSON.parse(m);

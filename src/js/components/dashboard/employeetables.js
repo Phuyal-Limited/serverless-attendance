@@ -1,14 +1,18 @@
 import React from "react";
 import axios from "axios/index";
 
-import '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
-import '../../css/custom.css';
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
+import '../../../css/custom.css';
 
-import '../../css/loader.css'
+import '../../../css/loader.css'
+import {withRouter} from 'react-router-dom'
 
-let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
+import {EMPLOYEE_API_URL} from "../../../config";
+//let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
+
+
 
 class EmployeeTable extends React.Component{
     constructor(props){
@@ -80,7 +84,6 @@ class EmployeeTable extends React.Component{
             return ("December");
         }
     }
-
     getThisMonthInNumber(m){
         if (m === "January") {
             return (1);
@@ -119,7 +122,6 @@ class EmployeeTable extends React.Component{
             return (12);
         }
     }
-
     getDaysInMonth(ma) {
         var a = 30;
         var li=ma.split(' ');
@@ -139,9 +141,6 @@ class EmployeeTable extends React.Component{
         }
         return a;
     }
-
-
-
     handleChange(event) {
         this.setState({
             //sets the value in the input field after change to this.state.search
@@ -185,21 +184,22 @@ class EmployeeTable extends React.Component{
         }
 
     }
-
     requestToApi(date) {
         this.setState({
             dateDisplayField: "..."
         });
-        axios.get(API_URL, {
+        axios.get(EMPLOYEE_API_URL, {
+            headers:{
+                token:localStorage.getItem('idToken')
+            },
             params: {
-                addNewIntern: "employeeOverall",
-                y: date,
-                u: 'admin',
-                p: 'youshallnotpass',
-                t: localStorage.getItem("employeename")
+                param1: "employeeOverall",
+                param2: date,
+                param3: localStorage.getItem("employeename")
             }
         })
             .then(response => {
+                //console.log(response)
                 if (response.data === "Nothing From AWS Lambda Here") {
                     this.setState({
                         displayText: "Wrong credentials"
@@ -218,15 +218,15 @@ class EmployeeTable extends React.Component{
                         info: final,
                         dateDisplayField: "OverAll Record of "+localStorage.getItem("employeename")+" for "+date
                     });
+                    //this.props.changeCounter(parseInt(final['count']), final['leaveid'], final['startdate'], final['leavestatus'], final['enddate'], final['leavetype'], final['leavedescription'], final['employeeusername']);
                 }
             })
             .catch(error => {
-                this.setState({
-                    displayText: "Request failed"
-                });
+                localStorage.clear();
+                alert('Session Expired! log in again...');
+                this.props.history.push('/login/employee');
             });
     }
-
     monthlyRequestToApi(date){
         let fields = date.split('-');
         let year = fields[0];
@@ -242,13 +242,14 @@ class EmployeeTable extends React.Component{
             alert("Login First")
         }
         else{
-            axios.get(API_URL, {
+            axios.get(EMPLOYEE_API_URL, {
+                headers:{
+                    token:localStorage.getItem('idToken')
+                },
                 params: {
-                    addNewIntern: "employeeMonthly",
-                    y: d,
-                    u: 'admin',
-                    p: 'youshallnotpass',
-                    t: employeename
+                    param1: "employeeMonthly",
+                    param2: d,
+                    param3: employeename
                 }
             })
                 .then(response => {
@@ -273,9 +274,9 @@ class EmployeeTable extends React.Component{
                     }
                 })
                 .catch(error => {
-                    this.setState({
-                        displayText: "Request failed"
-                    });
+                    localStorage.clear();
+                    alert('Session Expired! log in again...');
+                    this.props.history.push('/login/employee');
                 });
 
         }
@@ -293,8 +294,6 @@ class EmployeeTable extends React.Component{
         var toMonth=yyyy.toString()+"-"+mm.toString();
         this.requestToApi(date);
         this.monthlyRequestToApi(toMonth);
-        console.log(this.state.info)
-        console.log(this.state.monthlyinfo);
 
 
     }
@@ -310,7 +309,6 @@ class EmployeeTable extends React.Component{
     }
 
     render(){
-
         let changeInSearchField = this.handleChange.bind();
         let monthlyClick = this.handleMonthChange.bind();
 
@@ -490,4 +488,18 @@ class EmployeeTable extends React.Component{
     }
 }
 
-export default EmployeeTable;
+/*
+function mapStateToProps(state){
+    return {
+        employee:state.employee
+    }
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({
+
+    })
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(EmployeeTable);*/
+export default withRouter(EmployeeTable);

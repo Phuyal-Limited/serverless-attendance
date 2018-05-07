@@ -1,20 +1,20 @@
 import React, {Component} from 'react';
 import moment from 'moment';
-import '../../css/main.css';
+import '../../../css/main.css';
 import NavBar from '../navbar/loggedinnavbar'
 
-import '../../css/style.css';
+import '../../../css/style.css';
 
-import  '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css'
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
-import '../../css/custombootstrap.css'
-import '../../css/newforcalendar.css'
+import  '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css'
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
+import '../../../css/custombootstrap.css'
+import '../../../css/newforcalendar.css'
 
 import axios from "axios/index";
+import {EMPLOYEE_API_URL} from "../../../config";
 
-let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
-class Calendar extends Component{
+class CalendarEmployee extends Component{
     constructor(props){
         super(props);
         var today = new Date();
@@ -41,7 +41,7 @@ class Calendar extends Component{
             showEvents:false,
 
             eventdescription:'',
-            eventtype:'Holiday',
+            eventtype:'holiday',
             addEventDate:dateForEvent,
 
             eventUpdateType:'',
@@ -53,23 +53,26 @@ class Calendar extends Component{
         };
         this.previous = this.previous.bind(this);
         this.next = this.next.bind(this);
-        this.handleAddEvent=this.handleAddEvent.bind(this)
-        this.handleEditEvent=this.handleEditEvent.bind(this)
-        this.handleCancel=this.handleCancel.bind(this)
-        this.handleEdit=this.handleEdit.bind(this)
-        this.handleDelete=this.handleDelete.bind(this)
-        this.handleToggle=this.handleToggle.bind(this)
+        //this.handleAddEvent=this.handleAddEvent.bind(this)
+        //this.handleEditEvent=this.handleEditEvent.bind(this)
+        //this.handleCancel=this.handleCancel.bind(this)
+        //this.handleEdit=this.handleEdit.bind(this)
+        //this.handleDelete=this.handleDelete.bind(this)
+        //this.handleToggle=this.handleToggle.bind(this)
     }
     getEventsFromApi(){
-        axios.get(API_URL, {
+        axios.get(EMPLOYEE_API_URL, {
+            headers:{
+                token:localStorage.getItem("idToken")
+            },
             params: {
-                addNewIntern: "GetEvents",
-                t: localStorage.getItem("adminname")
+                param1: "GetEvents",
+                param2: localStorage.getItem("employeename")
             }
         })
             .then(response => {
                 if (response.data === "Nothing From AWS Lambda Here") {
-                    alert(response.data)
+
                     this.setState({
                         displayText: "Wrong credentials"
                     });
@@ -80,6 +83,7 @@ class Calendar extends Component{
                     });
                 }
                 else {
+                    console.log(response.data)
                     var rfinal = "{" + response.data + "}";
                     var m = rfinal.replace(/'/g, '"');
                     let final = JSON.parse(m);
@@ -89,10 +93,9 @@ class Calendar extends Component{
                 }
             })
             .catch(error => {
-                alert("Error while getting events")
-                this.setState({
-                    displayText: "Request failed"
-                });
+                localStorage.clear();
+                alert('Session Expired! log in again...');
+                this.props.history.push('/login/employee');
             });
     }
     componentDidMount(){
@@ -176,11 +179,10 @@ class Calendar extends Component{
             return (12);
         }
     }
-
     handleChange(event){
         this.setState({[event.target.name]: event.target.value})
     }
-    handleAddEvent(event){
+    /*handleAddEvent(event){
         event.preventDefault();
         if(this.state.eventdescription===''){
             this.setState({
@@ -241,8 +243,8 @@ class Calendar extends Component{
                 });
 
         }
-    }
-    handleEditEvent(event){
+    }*/
+    /*handleEditEvent(event){
         event.preventDefault();
         if(this.state.eventdescription===''){
             this.setState({
@@ -307,8 +309,8 @@ class Calendar extends Component{
                 });
 
         }
-    }
-    handleEdit(date, eventtype, description, event){
+    }*/
+    /*handleEdit(date, eventtype, description, event){
         event.preventDefault()
         let newDate=date.split(" ");
         let monthinnumber=this.getThisMonthInNumber(newDate[1]);
@@ -321,6 +323,7 @@ class Calendar extends Component{
             strday="0"+newDate[0].toString()
         }
         let d=newDate[2]+"-"+strmonth+"-"+strday
+
         this.setState({
             addEvent: true,
             eventUpdateType:'Edit',
@@ -332,9 +335,12 @@ class Calendar extends Component{
             beforeEditDate: date
         })
 
-    }
-    handleDelete(date, eventtype, description, event){
+    }*/
+    /*handleDelete(date, eventtype, description, event){
         event.preventDefault();
+        this.setState({
+            confirmation:false
+        })
         axios.get(API_URL, {
             params: {
                 addNewIntern: "DeleteEvent",
@@ -370,8 +376,8 @@ class Calendar extends Component{
             });
 
 
-    }
-    handleCancel(){
+    }*/
+    /*handleCancel(){
         this.setState({
             addEvent:false,
             eventdescription:'',
@@ -390,8 +396,7 @@ class Calendar extends Component{
             })
         }
 
-    }
-
+    }*/
     previous() {
         const currentMonthView = this.state.selectedMonth;
 
@@ -510,8 +515,7 @@ class Calendar extends Component{
         );
 
     }
-
-    renderAddEvent(){
+    /*renderAddEvent(){
         return(
             <div>
                 <h3>{this.state.eventUpdateType} Event</h3>
@@ -530,9 +534,9 @@ class Calendar extends Component{
                         value={this.state.eventtype}
                         onChange={(event) => this.handleChange(event)}
                     >
-                        <option value="Holiday">Holiday</option>
-                        <option value="Celebration">Celebration</option>
-                        <option value="Other">Other</option>
+                        <option value="holiday">holiday</option>
+                        <option value="celebration">celebration</option>
+                        <option value="other">other</option>
                     </select><br/>
                     <input
                         name="eventdescription"
@@ -565,7 +569,7 @@ class Calendar extends Component{
                 <h1 className="message">{this.state.info}</h1>
             </div>
         );
-    }
+    }*/
     renderThisMonthsEvents(){
         let events=[]
 
@@ -615,18 +619,12 @@ class Calendar extends Component{
                 if(parseInt(year, 10)===selectedyear && month===selectedmonth) {
                     let eventtype = this.state.selectedMonthEvents['eventtype'][i]
                     let des=this.state.selectedMonthEvents['description'][i]
-                    let editClick = this.handleEdit.bind(this, this.state.selectedMonthEvents['date'][i], eventtype, des);
-                    let deleteClick = this.handleDelete.bind(this, this.state.selectedMonthEvents['date'][i], eventtype, des);
+                    //let editClick = this.handleEdit.bind(this, this.state.selectedMonthEvents['date'][i], eventtype, des);
+                    //let deleteClick = this.handleDelete.bind(this, this.state.selectedMonthEvents['date'][i], eventtype, des);
                     if (eventtype === "holiday") {
                         events.push(
                             <tr key={i} style={{fontSize:"20px"}}>
                                 <td>{da}</td>
-                                <td>
-                                    <a onClick={editClick} data-toggle="tooltip" title="Edit Event" style={{display:this.state.confirmation?"none":"inline"}}><i className="fa fa-edit icon-padding"/></a>
-                                    <a onClick={this.handleToggle} data-toggle="tooltip" title="Delete Event" style={{display:this.state.confirmation?"none":"inline"}}><i className="fa fa-trash icon-padding"/></a>
-                                    <a onClick={deleteClick} style={{display:this.state.confirmation?"inline":"none"}}><i className="fa fa-check icon-padding"/></a>
-                                    <a onClick={this.handleToggle} style={{display:this.state.confirmation?"inline":"none"}}><i className="fa fa-times icon-padding"/></a>
-                                </td>
                                 <td  style={{color: "#f00"}}>{eventtype}</td>
                                 <td>{des}</td>
                             </tr>
@@ -638,8 +636,6 @@ class Calendar extends Component{
                                 <td>
                                     {da}
                                 </td>
-                                <td><i className="fa fa-edit icon-padding"/>
-                                    <i className="fa fa-trash icon-padding"/></td>
                                 <td>{eventtype}</td>
                                 <td>{des}</td>
                             </tr>
@@ -656,74 +652,49 @@ class Calendar extends Component{
 
     }
     render(){
+        return(
+            <div>
+                <NavBar data={"employee"}/>
+                <section id="about" className="masthead text-center">
 
-        if(this.state.addEvent) {
-            return (
-                <div>
-                    <NavBar/>
-                    <section id="about" className="masthead text-center">
-
-                        <div className="row">
-                            <div className="col-md-7">
-                                {this.renderCalendar()}
-                            </div>
-                            <div className="col-md-5">
-                                {this.renderAddEvent()}
-                            </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            {this.renderCalendar()}
                         </div>
+                        <div className="col-md-6">
+                            <div className="panel shift-left">
+                                <div className="panel-heading">
+                                    <h3 className="panel-title">Monthly Events</h3>
+                                </div>
+                                <div className="panel-body fixed-height panel-white">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <table className="table">
+                                                <thead>
+                                                <tr style={{ fontSize:"20px"}}>
+                                                    <th>Date</th>
+                                                    <th>EventType</th>
+                                                    <th>About</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {this.renderThisMonthsEvents()}
+                                                </tbody>
 
-                    </section>
-                </div>
+                                            </table>
 
-            );
-        }
-
-        else{
-            return(
-                <div>
-                    <NavBar/>
-                    <section id="about" className="masthead text-center">
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                {this.renderCalendar()}
-                            </div>
-                            <div className="col-md-6">
-                                <div className="panel shift-left">
-                                    <div className="panel-heading">
-                                        <h3 className="panel-title">Monthly Events</h3>
-                                    </div>
-                                    <div className="panel-body fixed-height panel-white">
-                                        <div className="row">
-                                            <div className="col-md-12">
-                                                <table className="table">
-                                                    <thead>
-                                                    <tr style={{ fontSize:"20px"}}>
-                                                        <th>Date</th>
-                                                        <th>Edit/Delete</th>
-                                                        <th>EventType</th>
-                                                        <th>About</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {this.renderThisMonthsEvents()}
-                                                    </tbody>
-
-                                                </table>
-
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                         </div>
-                    </section>
-                </div>
 
-            );
-        }
+                    </div>
+                </section>
+            </div>
+        );
+
     }
 }
 
@@ -822,7 +793,7 @@ class Day extends React.Component {
 
         let day = this.props.day;
         let selected = this.props.selected;
-        let select = this.props.select;
+        //let select = this.props.select;
         let isSat=this.props.isSat;
         let holidayEvents=this.props.holidayEvents;
         let otherEvents=this.props.otherEvents;
@@ -850,7 +821,6 @@ class Day extends React.Component {
                         (day.hasEvents ? " has-events" : "")
                     }
                     style={{color:"#f00"}}
-                    onClick={() => select(day)}
                 >
                     <div className="day-number">{day.number}</div>
                 </div>
@@ -868,7 +838,6 @@ class Day extends React.Component {
                         (day.hasEvents ? " has-events" : "")
                     }
                     style={{color:"#209f1e"}}
-                    onClick={() => select(day)}
                 >
                     <div className="day-number">{day.number}</div>
                 </div>
@@ -884,7 +853,6 @@ class Day extends React.Component {
                         (day.date.isSame(selected) ? " selected" : "") +
                         (day.hasEvents ? " has-events" : "")
                     }
-                    onClick={() => select(day)}
                 >
                     <div className="day-number">{day.number}</div>
                 </div>
@@ -895,4 +863,4 @@ class Day extends React.Component {
     }
 }
 
-export default Calendar;
+export default CalendarEmployee;

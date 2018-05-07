@@ -5,10 +5,10 @@ import NavBar from '../navbar/homepagenavbar';
 import {CognitoUser, CognitoUserPool} from "amazon-cognito-identity-js";
 import {withRouter} from 'react-router-dom';
 
-import  '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css'
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
-import '../../css/custombootstrap.css';
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
+import '../../../css/custombootstrap.css';
 
 let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
 
@@ -37,7 +37,7 @@ class PasswordReset extends Component {
                 this.setState({
                     employeeids: response.data.toString()
                 });
-                console.log(this.state.employeeids)
+                //console.log(this.state.employeeids)
                 p=this.state.employeeids.split(",");
                 const employeePool={
                     UserPoolId: p[2].replace(/\s+/, ""),

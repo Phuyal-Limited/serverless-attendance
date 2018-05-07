@@ -1,0 +1,5 @@
+{
+	"API_URL": "https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance",
+    "EMPLOYEE_API_URL": "https://t7rfhexda6.execute-api.eu-west-2.amazonaws.com/prod/employeerequests",
+    "COMPANY_API_URL" : "https://xrresujl2h.execute-api.eu-west-2.amazonaws.com/prod/companyrequests"
+}

@@ -16,9 +16,18 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.2.0",
     "react-native": "^0.54.0",
+<<<<<<< HEAD
+    "react-redux": "^5.0.7",
+    "react-router": "^3.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0"
+=======
     "react-router": "^3.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1"
+>>>>>>> 4a45f49ac39b1d9e973138e649b205059ee1eada
   },
   "scripts": {
     "start": "react-scripts start",

@@ -4,10 +4,10 @@ import {AuthenticationDetails, CognitoUser, CognitoUserPool} from "amazon-cognit
 import {NavLink , withRouter} from 'react-router-dom';
 import NavBar from '../navbar/homepagenavbar';
 
-import  '../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css'
-import '../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
-import '../../HomeTemplate/css/grayscale.min.css';
-import '../../css/custombootstrap.css';
+import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
+import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
+import '../../../HomeTemplate/css/grayscale.min.css';
+import '../../../css/custombootstrap.css';
 
 let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
 
@@ -40,7 +40,7 @@ class EmployeeLogin extends Component {
                 this.setState({
                     employeeids: response.data.toString()
                 });
-                console.log(this.state.employeeids)
+                //console.log(this.state.employeeids)
                 p=this.state.employeeids.split(",");
                 const employeePool={
                     UserPoolId: p[2].replace(/\s+/, ""),
@@ -136,58 +136,67 @@ class EmployeeLogin extends Component {
         this.getids()
         const p = new Promise((res, rej)=> {
             setTimeout(() => {
-                var authenticationData = {
-                    Username: username,
-                    Password: password,
-                };
-                var authenticationDetails = new AuthenticationDetails(authenticationData);
-                const employeeUserPool = new CognitoUserPool(this.state.id);
-                var userData = {
-                    Username: username,
-                    Pool: employeeUserPool
-                };
-                var cognitoUser = new CognitoUser(userData);
-                cognitoUser.authenticateUser(authenticationDetails, {
-                    onSuccess: function (result) {
-                        console.log('access token + ' + result.getAccessToken().getJwtToken());
-                        console.log('idToken + ' + result.idToken.jwtToken);
-                        res({result})
-                    },
-                    onFailure: function (err) {
-                        console.log("Got an error")
-                        console.log(err);
-                        rej(err)
-                    },
-                    newPasswordRequired: function(result) {
-                        if(!localStorage.getItem("resetpassword")){
-                            console.log(result);
-                            res({result});
+                try {
+                    var authenticationData = {
+                        Username: username,
+                        Password: password,
+                    };
+                    var authenticationDetails = new AuthenticationDetails(authenticationData);
+                    const employeeUserPool = new CognitoUserPool(this.state.id);
+                    var userData = {
+                        Username: username,
+                        Pool: employeeUserPool
+                    };
+                    var cognitoUser = new CognitoUser(userData);
+                    cognitoUser.authenticateUser(authenticationDetails, {
+                        onSuccess: function (result) {
+                            //console.log('access token + ' + result.getAccessToken().getJwtToken());
+                            //console.log('idToken + ' + result.idToken.jwtToken);
+                            localStorage.setItem("AccessToken", result.getAccessToken().getJwtToken());
+                            localStorage.setItem("idToken", result.idToken.jwtToken);
+                            res({result})
+                        },
+                        onFailure: function (err) {
+                            console.log("Got an error")
+                            console.log(err);
+                            rej(err)
+                        },
+                        newPasswordRequired: function (result) {
+                            if (!localStorage.getItem("resetpassword")) {
+                                console.log(result);
+                                res({result});
+                            }
+                            else {
+                                cognitoUser.completeNewPasswordChallenge(localStorage.getItem("resetpassword"), null, {
+                                    onSuccess: function (result) {
+                                        console.log('In the onSuccess. Password changed and user confirmed');
+                                        localStorage.setItem("resetpassword", "")
+                                        localStorage.setItem("employeename", username)
+
+                                        res({result})
+                                    },
+                                    authSuccess: function (result) {
+                                        //Password has been updated.
+                                        console.log('In the AuthSuccess.');
+                                        localStorage.setItem("resetpassword", "")
+
+                                    },
+                                    onFailure: function (err) {
+                                        console.log('In the Error ' + err.toString());
+                                        localStorage.setItem("resetpassword", "")
+
+                                    }
+                                });
+                            }
                         }
-                        else{
-                            cognitoUser.completeNewPasswordChallenge(localStorage.getItem("resetpassword"), null, {
-                                onSuccess: function (result) {
-                                    console.log('In the onSuccess. Password changed and user confirmed');
-                                    localStorage.setItem("resetpassword","")
-                                    localStorage.setItem("employeename", username)
-
-                                    res({result})
-                                },
-                                authSuccess: function (result) {
-                                    //Password has been updated.
-                                    console.log('In the AuthSuccess.');
-                                    localStorage.setItem("resetpassword","")
-
-                                },
-                                onFailure: function (err) {
-                                    console.log('In the Error ' + err.toString());
-                                    localStorage.setItem("resetpassword","")
-
-                                }
-                            });
-                        }
-                    }
-                });
-            }, 3000);
+                    });
+                }
+                catch(err){
+                    this.setState({
+                        info: "Slow Connection. Try Again."
+                    })
+                }
+            }, 5000);
         });
         return p;
     }
@@ -224,7 +233,7 @@ class EmployeeLogin extends Component {
                     }
                 })
                     .then(response => {
-                        console.log(response.data)
+                        //console.log(response.data)
                         localStorage.setItem("employee", "true");
                         localStorage.setItem("employeename", this.state.username);
                         localStorage.setItem("employeepassword", "");
@@ -301,6 +310,7 @@ class EmployeeLogin extends Component {
                                 this.setState({
                                     info: "Successfully Signed In...Please wait!!"
                                 });
+
                                 setTimeout(() => {
                                     this.props.history.push('/dashboard/employee');
 

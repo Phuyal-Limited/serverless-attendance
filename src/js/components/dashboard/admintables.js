@@ -343,6 +343,19 @@ class Tables extends React.Component {
                         </tr>
                     );
                 }
+                else if(this.state.info['present'][b]==="OnLeave"){
+                    daily.push(
+                        <tr key={b} onClick={boundClick}>
+                            <td>{b + 1}</td>
+                            <td><a>{this.state.info['names'][b]}</a></td>
+                            <td style={{color: '#0000FF'}}>{this.state.info['present'][b]}</td>
+                            <td>{this.state.info['entry_time'][b]}</td>
+                            <td>{this.state.info['exit_time'][b]}</td>
+                            <td>{this.state.info['entrystatus'][b]}</td>
+                            <td>{this.state.info['workduration'][b]}</td>
+                        </tr>
+                    );
+                }
 
                 //else displays Present field with red font colour
                 else {

@@ -26,6 +26,7 @@ class NewNotification extends Component{
             managercomment:'',
             active:null,
             comments:'',
+            daysno:'',
             info:''
         };
         this.handleClick=this.handleClick.bind(this);
@@ -49,6 +50,7 @@ class NewNotification extends Component{
             managerusername:data[i]['managerusername'],
             leavetype:data[i]['leavetype'],
             managercomment:data[i]['managercomment'],
+            daysno:data[i]['daysnumber'],
             active: i
         })
 
@@ -75,6 +77,7 @@ class NewNotification extends Component{
                 }
             })
                 .then(response => {
+                    console.log(response)
                     this.setState({
                         info: "Request Approved"
                     })
@@ -86,18 +89,18 @@ class NewNotification extends Component{
                             data.splice(this.state.active, 1)
                             let str = JSON.stringify(data)
                             localStorage.setItem("adminnotification", str)
-                            this.setState({
+                            /*this.setState({
                                 notifications: str,
                                 info:'',
                                 comments:''
                             })
-                            window.location.reload()
+                            window.location.reload()*/
                         }
                         else {
-                            this.setState({
+                            /*this.setState({
                                 notifications: '[]',
                                 info:''
-                            })
+                            })*/
                         }
                     }, 3000);
 
@@ -187,6 +190,7 @@ class NewNotification extends Component{
                         <td>{i+1}</td>
                         <td>{data[i]['employeeusername']}</td>
                         <td>{data[i]['date']}</td>
+                        <td>{data[i]['daysnumber']}</td>
                         <td>{data[i]['leavetype']}</td>
                     </tr>
                 )
@@ -199,6 +203,7 @@ class NewNotification extends Component{
                             <td>{i + 1}</td>
                             <td>{data[i]['employeeusername']}</td>
                             <td>{data[i]['date']}</td>
+                            <td>{data[i]['daysnumber']}</td>
                             <td>{data[i]['leavetype']}</td>
                         </tr>
                     )
@@ -234,6 +239,7 @@ class NewNotification extends Component{
                                                                     <th>Id</th>
                                                                     <th>Employee</th>
                                                                     <th>Start Date</th>
+                                                                    <th>DaysNo</th>
                                                                     <th>LeaveType</th>
                                                                 </tr>
                                                                 </thead>
@@ -266,9 +272,14 @@ class NewNotification extends Component{
                                                         <td>{this.state.enddate}</td>
                                                     </tr>
                                                     <tr>
+                                                        <td>Total days</td>
+                                                        <td>{this.state.daysno}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td>Leave Type</td>
                                                         <td>{this.state.leavetype}</td>
                                                     </tr>
+
                                                     <tr>
                                                         <td>Leave Description</td>
                                                         <td>{this.state.leavedescription}</td>
@@ -360,6 +371,7 @@ class NewNotification extends Component{
                                                                     <th>Id</th>
                                                                     <th>Employee</th>
                                                                     <th>Start Date</th>
+                                                                    <th>DaysNo</th>
                                                                     <th>LeaveType</th>
                                                                 </tr>
                                                                 </thead>

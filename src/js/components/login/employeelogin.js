@@ -267,9 +267,11 @@ class EmployeeLogin extends Component {
         }
     }
     handleClick(){
+
         this.setState({
             info: "Logging in..Please Wait!!"
         });
+        //this.refs.btn.setAttribute("visibility", "false");
         this.signInEmployeeUser({
             username: this.state.username,
             password: this.state.password
@@ -375,6 +377,7 @@ class EmployeeLogin extends Component {
                                                 required="required"/><br/>
                                             <li className="list-inline-item" >
                                                 <button
+                                                    ref="btn"
                                                     onClick={boundClick}
                                                     className="btn btn-default btn-lg"
                                                 >
@@ -385,6 +388,8 @@ class EmployeeLogin extends Component {
 
                                             <h1 className="message">{this.state.info}</h1>
                                             <NavLink to='/login/company'>Sign In with Company Credentials</NavLink>
+                                            <br/>
+                                            <NavLink to='/forgotpassword'>Forgot Password??</NavLink>
                                         </div>
                                     </div>
                                 </div>

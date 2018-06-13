@@ -37,17 +37,14 @@ class RegisterEmployee extends Component {
         this.setState({[event.target.name]: event.target.value})
     }
     handleInputChange(event){
-        //var file = this.refs.file.files[0];
+        var file = this.refs.file.files[0];
         var reader = new FileReader();
-        //var url = reader.readAsDataURL(file);
-
+        reader.readAsDataURL(file);
         reader.onloadend = function (e) {
             var img=reader.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-
             this.setState({
                 imgSrc: [reader.result],
                 baseEncode: img,
-
 
             });
         }.bind(this);
@@ -117,7 +114,7 @@ class RegisterEmployee extends Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        if(this.state.username==='' || this.state.imgSrc.length===0){
+        if(this.state.username===''||this.state.imgSrc.length===0){
             this.setState({
                 info: "Fill all fields properly"
             });
@@ -193,8 +190,8 @@ class RegisterEmployee extends Component {
                 <header className="masthead">
                     <div className="intro-body">
                         <div className="container">
-                            <div className="row">
-                                <div className="col-md-6" style={{marginTop: 150}}>
+                            <div className="row" style={{paddingBottom:40}}>
+                                <div className="col-md-6" style={{padding:25}}>
                                     <h3>Register New Employee</h3>
                                     <form onSubmit={this.handleSubmit} className="form-custom">
                                         <input
@@ -249,8 +246,8 @@ class RegisterEmployee extends Component {
 
                                         <input
                                             ref="file"
-                                            id="photo"
-                                            name="photo"
+                                            id="imgSrc"
+                                            name="imgSrc"
                                             type="file"
                                             className="custom-file-upload"
                                             placeholder="Photo"
@@ -271,7 +268,7 @@ class RegisterEmployee extends Component {
                                     </form>
                                     <h1 className="message">{this.state.info}</h1>
                                 </div>
-                                <div className="col-md-6" style={{marginTop:250}}>
+                                <div className="col-md-6" style={{padding:25}}>
                                     <img className="fixedimg" src={this.state.imgSrc} alt=""/>
                                 </div>
 

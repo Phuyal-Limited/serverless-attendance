@@ -4,7 +4,7 @@ import React, {Component} from "react";
 
 import {AuthenticationDetails, CognitoUser, CognitoUserPool} from "amazon-cognito-identity-js";
 
-import {NavLink, withRouter} from 'react-router-dom';
+import { withRouter, Redirect} from 'react-router-dom';
 import '../../../HomeTemplate/vendor/bootstrap/css/bootstrap.min.css';
 import '../../../HomeTemplate/vendor/font-awesome/css/font-awesome.min.css';
 import '../../../HomeTemplate/css/grayscale.min.css';
@@ -14,7 +14,7 @@ import NavBar from '../navbar/homepagenavbar';
 
 let API_URL = 'https://c4q8oqddyj.execute-api.eu-west-2.amazonaws.com/prod/internattendance';
 
-class AdminLogin extends Component {
+class AttendFromWebLogin extends Component {
 
     constructor(props){
         super(props);
@@ -24,10 +24,12 @@ class AdminLogin extends Component {
             info: '',
             data:{},
             adminids:'',
-            id:{}
+            id:{},
+            cancel:false
         };
         this.handleChange=this.handleChange.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
+        this.handleCancel=this.handleCancel.bind(this);
     }
     getids(){
         var p=[];
@@ -97,6 +99,12 @@ class AdminLogin extends Component {
     handleChange(event){
         this.setState({[event.target.name]: event.target.value})
     }
+    handleCancel(){
+        this.setState({
+            cancel:true
+        })
+
+    }
     signInUser({username, password}){
         this.getids()
         const p = new Promise((res, rej)=> {
@@ -131,14 +139,12 @@ class AdminLogin extends Component {
                         onFailure: function (err) {
 
                             console.log(err);
-
                             rej(err)
-                        }
+                        },
 
                     });
                 }
                 catch(err){
-                    console.log(err)
                     this.setState({
                         info:"Slow Connection. Try Again."
                     })
@@ -161,24 +167,30 @@ class AdminLogin extends Component {
             password: this.state.password
         })
             .then(({result})=>{
-
-                localStorage.setItem("admin", "true");
-                localStorage.setItem("adminname", this.state.username)
+                localStorage.setItem("attendforweb","true")
+                localStorage.setItem("adminnameforattendfromweb", this.state.username)
                 console.log("done signing in")
                 this.setState({
                     info: "Successfully Signed In..Please Wait"
                 });
                 setTimeout(() => {
-                    this.props.history.push('/dashboard/company');
+                    this.props.history.push('/attend');
                 }, 2000);
 
             })
-            .catch((err)=>{
+            .catch((error)=>{
                 // if failure, display the error message and toggle the loading icon to disappear
-
-                this.setState({
-                    info: err['message']
-                })
+                console.log(error);
+                if(error['code']==="InvalidLambdaResponseException"){
+                    this.setState({
+                        info: "Email Already Used"
+                    });
+                }
+                else{
+                    this.setState({
+                        info: error['message']
+                    })
+                }
 
             })
 
@@ -186,51 +198,67 @@ class AdminLogin extends Component {
     }
     render(){
         let submit=this.handleSubmit.bind();
+        let cancel=this.handleCancel.bind()
+        if (this.state.cancel){
+            return(
+                <Redirect to='/'/>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <NavBar/>
+                    <header className="masthead">
+                        <div className="intro-body">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-lg-8 mx-auto" style={{marginTop: 150}}>
+                                        <div className="form-custom">
+                                            <h3>Attend From Web Login</h3>
+                                            <input
+                                                type="text"
+                                                name="username"
+                                                value={this.state.username}
+                                                onChange={(event) => this.handleChange(event)}
+                                                placeholder="Username"
+                                                required="required"/><br/>
+                                            <input
+                                                type="password"
+                                                name="password"
 
-        return (
-            <div>
-                <NavBar/>
-                <header className="masthead">
-                    <div className="intro-body">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-lg-8 mx-auto" style={{marginTop: 150}}>
-                                    <div className="form-custom">
-                                        <h3>Company Login</h3>
-                                        <input
-                                            type="text"
-                                            name="username"
-                                            value={this.state.username}
-                                            onChange={(event) => this.handleChange(event)}
-                                            placeholder="Username"
-                                            required="required"/><br/>
-                                        <input
-                                            type="password"
-                                            name="password"
+                                                value={this.state.password}
+                                                onChange={(event) => this.handleChange(event)}
+                                                placeholder="Password"
+                                                required="required"/><br/>
+                                            <li className="list-inline-item col-md-2">
+                                                <button
+                                                    onClick={submit}
+                                                    className="btn btn-default btn-lg"
+                                                >
+                                                    <i className="fa fa-level-up fa-fw"/>
+                                                    <span className="network-name">Login</span>
+                                                </button>
+                                            </li>
+                                            <li className="list-inline-item col-md-3">
+                                                <button
+                                                    onClick={cancel}
+                                                    className="btn btn-default btn-lg"
+                                                >
+                                                    <i className="fa fa-level-up fa-fw"/>
+                                                    <span className="network-name">Cancel</span>
+                                                </button>
+                                            </li>
+                                            <h1 className="message">{this.state.info}</h1>
 
-                                            value={this.state.password}
-                                            onChange={(event) => this.handleChange(event)}
-                                            placeholder="Password"
-                                            required="required"/><br/>
-                                        <li className="list-inline-item">
-                                            <button
-                                                onClick={submit}
-                                                className="btn btn-default btn-lg"
-                                            >
-                                                <i className="fa fa-level-up fa-fw" />
-                                                <span className="network-name">Company Login</span>
-                                            </button>
-                                        </li>
-                                        <h1 className="message">{this.state.info}</h1>
-                                        <NavLink to='/login/employee'>Sign In with Employee Credentials</NavLink>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </header>
-            </div>
-        );
+                    </header>
+                </div>
+            );
+        }
     }
 }
-export default withRouter(AdminLogin);
+export default withRouter(AttendFromWebLogin);

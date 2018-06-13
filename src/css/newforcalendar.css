@@ -10,11 +10,13 @@
 
 }
 .second-div{
-    width:700px;
-    margin: 0 10% 0 10%;
+    width:600px;
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 10px;
 }
 .third-div{
-
+    align-items: center;
 }
 .new-align-left{
     text-align: left;

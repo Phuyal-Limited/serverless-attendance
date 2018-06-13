@@ -135,6 +135,7 @@ body {
     margin-bottom: -20px;
 }
 .main-calendar .days-container .week {
+    width: 500px;
     height: 35px;
 }
 .main-calendar .day-events {

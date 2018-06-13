@@ -14,10 +14,14 @@ class ForgotPassword extends Component{
         super(props);
         this.state={
             username:'',
+            code:'',
+            password:'',
+            repassword:'',
             id:{}
         }
         this.handleChange=this.handleChange.bind(this);
-        this.handleClick=this.handleClick.bind(this);
+        this.handleRequestCode=this.handleRequestCode.bind(this);
+        this.handleSubmitPassword=this.handleSubmitPassword.bind(this);
     }
     getids(){
         var p=[];
@@ -49,8 +53,11 @@ class ForgotPassword extends Component{
     handleChange(event){
         this.setState({[event.target.name]: event.target.value})
     }
-    handleClick(){
+    handleRequestCode(){
         this.getids()
+        this.setState({
+            info:"Please wait..."
+        })
         const p = new Promise((res, rej)=> {
             setTimeout(() => {
                 try{
@@ -66,10 +73,11 @@ class ForgotPassword extends Component{
                             console.log('call result: ' + result);
                         },
                         onFailure: function(err) {
-                            alert(err.toString());
+                            console.log(err)
+                            //alert(err.toString());
                         },
                         inputVerificationCode() {
-                            var verificationCode = prompt('Please input verification code ' ,'');
+                           /* var verificationCode = prompt('Please input verification code ' ,'');
                             var newPassword = prompt('Enter new password ' ,'');
                             var reNewPassword=prompt('Reenter the password','');
                             if(newPassword!==reNewPassword){
@@ -77,7 +85,10 @@ class ForgotPassword extends Component{
                             }
                             else{
                                 cognitoUser.confirmPassword(verificationCode, newPassword, this);
-                            }
+                            }*/
+                           this.setState({
+
+                           })
 
                         }
                     });
@@ -88,7 +99,7 @@ class ForgotPassword extends Component{
                     })
                 }
 
-            }, 5000);
+            }, 10000);
 
         }).catch(error => {
             alert('Error')
@@ -97,8 +108,63 @@ class ForgotPassword extends Component{
         return p;
 
     }
+    handleSubmitPassword(){
+        
+    }
+    renderNewPassword(){
+        let changepassword=this.handleSubmitPassword.bind()
+        return(
+            <div>
+                <NavBar/>
+                <header className="masthead">
+                    <div className="intro-body">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-lg-8 mx-auto" style={{marginTop: 150}}>
+                                    <h3>Change Password</h3>
+                                    <div className="form-custom">
+                                        <input
+                                            type="code"
+                                            name="code"
+                                            value={this.state.code}
+                                            onChange={(event) => this.handleChange(event)}
+                                            placeholder="Verification Code"
+                                            required="required"/><br/>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            value={this.state.password}
+                                            onChange={(event) => this.handleChange(event)}
+                                            placeholder="Password"
+                                            required="required"/><br/>
+                                        <input
+                                            type="password"
+                                            name="repassword"
+                                            value={this.state.repassword}
+                                            onChange={(event) => this.handleChange(event)}
+                                            placeholder="Confirm Password"
+                                            required="required"/><br/>
+                                        <li className="list-inline-item" >
+                                            <button
+                                                onClick={changepassword}
+                                                className="btn btn-default btn-lg"
+                                            >
+                                                <i className="fa fa-level-up fa-fw" />
+                                                <span className="network-name">Change Password</span>
+                                            </button>
+                                        </li>
+                                    </div>
+                                    <h1 className="message">{this.state.info}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            </div>
+        );
+    }
     render(){
-        let passBoundClick=this.handleClick.bind()
+        let passBoundClick=this.handleRequestCode.bind()
         return(
             <div>
                 <NavBar/>
@@ -114,7 +180,7 @@ class ForgotPassword extends Component{
                                             name="username"
                                             value={this.state.username}
                                             onChange={(event) => this.handleChange(event)}
-                                            placeholder="Password"
+                                            placeholder="Username"
                                             required="required"/><br/>
 
                                         <li className="list-inline-item" >

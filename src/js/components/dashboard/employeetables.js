@@ -253,6 +253,7 @@ class EmployeeTable extends React.Component{
                 }
             })
                 .then(response => {
+
                     if (response.data === "Nothing From AWS Lambda Here") {
                         this.setState({
                             displayText: "Wrong credentials"
@@ -274,9 +275,10 @@ class EmployeeTable extends React.Component{
                     }
                 })
                 .catch(error => {
-                    localStorage.clear();
-                    alert('Session Expired! log in again...');
-                    this.props.history.push('/login/employee');
+                    //localStorage.clear();
+                    //alert('Session Expired! log in again...');
+                    //this.props.history.push('/login/employee');
+                    console.log(error)
                 });
 
         }
@@ -389,16 +391,28 @@ class EmployeeTable extends React.Component{
                 var thisdate=this.state.monthlyinfo['date'][i];
                 var dayin=thisdate.split(" ");
                 var dayinNumber=dayin[0]
-                monthlyRecordForEmployee.push(
-                    <tr key={dayinNumber}>
+                if(this.state.monthlyinfo['status'][i]==="Present") {
+                    monthlyRecordForEmployee.push(
+                        <tr key={dayinNumber}>
                             <td>{dayinNumber}</td>
                             <td>{this.state.monthlyinfo['date'][i]}</td>
-                            <td style={{color:"#00FF00"}}>{this.state.monthlyinfo['status'][i]}</td>
+                            <td style={{color: "#00FF00"}}>{this.state.monthlyinfo['status'][i]}</td>
                             <td>{this.state.monthlyinfo['entry'][i]}</td>
                             <td>{this.state.monthlyinfo['exit'][i]}</td>
-                    </tr>
-
-                )
+                        </tr>
+                    )
+                }
+                else{
+                    monthlyRecordForEmployee.push(
+                        <tr key={dayinNumber}>
+                            <td>{dayinNumber}</td>
+                            <td>{this.state.monthlyinfo['date'][i]}</td>
+                            <td style={{color: "#0000FF"}}>{this.state.monthlyinfo['status'][i]}</td>
+                            <td>{this.state.monthlyinfo['entry'][i]}</td>
+                            <td>{this.state.monthlyinfo['exit'][i]}</td>
+                        </tr>
+                    )
+                }
 
             }
 

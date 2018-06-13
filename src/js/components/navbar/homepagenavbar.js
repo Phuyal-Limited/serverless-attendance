@@ -46,6 +46,11 @@ class NavBar extends Component {
                                         Register
                                     </a>
                                 </li>
+                                <li className="nav-item">
+                                    <a className="nav-link js-scroll-trigger" href="#login/company/attendfromweb">
+                                        WebAttend
+                                    </a>
+                                </li>
 
                             </ul>
                         </div>

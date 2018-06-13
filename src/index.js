@@ -25,6 +25,8 @@ import CalendarEmployee from './js/components/dashboard/employeecalendar'
 import AdminNotification from './js/components/notifications/newpage'
 import Notification from './js/components/notifications/employeenewpage'
 import AddRequest from './js/components/addrequest';
+import Attendance from './js/components/attendancefromweb'
+import AttendFromWeb from './js/components/login/attendfromweblogin'
 
 import {createStore} from 'redux';
 import {Provider} from 'react-redux'
@@ -45,9 +47,19 @@ const PrivateRoute = ({component: Component, ...rest}) => (
 const PrivateRouteEmployee = ({component: Component, ...rest}) => (
 
     <Route {...rest} render ={(props) => (
-        localStorage.getItem('employee') === "true" || localStorage.getItem('admin') === "true"
+        localStorage.getItem('employee') === "true"
             ? <Component {...props}/>
             : <Redirect to='/login/employee'/>
+    )}/>
+
+
+);
+const PrivateRouteAttend = ({component: Component, ...rest}) => (
+
+    <Route {...rest} render ={(props) => (
+        localStorage.getItem('attendforweb') === "true"
+            ? <Component {...props}/>
+            : <Redirect to='/login/company/attendfromweb'/>
     )}/>
 
 
@@ -61,9 +73,11 @@ ReactDOM.render(
                     <Route exact path="/login/employee" component={EmployeeLogin}/>
 
                     <Route exact path="/login/company" component={AdminLogin}/>
+                    <Route exact path="/login/company/attendfromweb" component={AttendFromWeb}/>
                     <Route exact path="/forgotpassword" component={ForgotPassword}/>
                     <Route exact path="/register/company" component={RegisterCompany}/>
                     <Route exact path="/passwordreset" component={PasswordReset}/>
+                    <PrivateRouteAttend exact path="/attend" component={Attendance}/>
 
                     <PrivateRouteEmployee exact path='/calendaremployee' component={CalendarEmployee}/>
                     <PrivateRouteEmployee exact path='/notifications' component={Notification}/>

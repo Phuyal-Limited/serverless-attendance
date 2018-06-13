@@ -454,10 +454,10 @@ class CalendarEmployee extends Component{
                 var month=this.state.selectedMonthEvents['date'][i].split(" ");
                 var type=this.state.selectedMonthEvents['eventtype'][i];
                 if(type==="holiday"){
-                    holidayEvents.push(month[0]+" "+month[1])
+                    holidayEvents.push(month[0]+" "+month[1]+" "+month[2])
                 }
                 else{
-                    otherEvents.push(month[0]+" "+month[1])
+                    otherEvents.push(month[0]+" "+month[1]+" "+month[2])
                 }
 
             }
@@ -512,6 +512,7 @@ class CalendarEmployee extends Component{
                     </div>
                 </div>
             </div>
+
         );
 
     }
@@ -656,44 +657,45 @@ class CalendarEmployee extends Component{
             <div>
                 <NavBar data={"employee"}/>
                 <section id="about" className="masthead text-center">
-
-                    <div className="row">
-                        <div className="col-md-6">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-12">
                             {this.renderCalendar()}
+                            </div>
                         </div>
-                        <div className="col-md-6">
-                            <div className="panel shift-left">
-                                <div className="panel-heading">
-                                    <h3 className="panel-title">Monthly Events</h3>
-                                </div>
-                                <div className="panel-body fixed-height panel-white">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <table className="table">
-                                                <thead>
-                                                <tr style={{ fontSize:"20px"}}>
-                                                    <th>Date</th>
-                                                    <th>EventType</th>
-                                                    <th>About</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {this.renderThisMonthsEvents()}
-                                                </tbody>
-
-                                            </table>
-
-                                        </div>
+                        <div className="row">
+                            <div className="col-md-8">
+                                <div className="panel">
+                                    <div className="panel-heading">
+                                        <h3 className="panel-title">Selected Month's Events</h3>
                                     </div>
+                                    <div className="panel-body fixed-height panel-white">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <table className="table">
+                                                    <thead>
+                                                    <tr style={{ fontSize:"20px"}}>
+                                                        <th>Date</th>
+                                                        <th>EventType</th>
+                                                        <th>About</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {this.renderThisMonthsEvents()}
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
-
+                            </div>
                         </div>
-
                     </div>
-                </section>
+                 </section>
             </div>
-        );
+    );
 
     }
 }
@@ -801,12 +803,12 @@ class Day extends React.Component {
         var dayHasHolidayEvents = false;
         var dayHasOtherEvents=false;
         for (var i = 0; i < holidayEvents.length; i++) {
-            if (holidayEvents[i]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)) {
+            if (holidayEvents[i]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)+ " "+day.date.year().toString()) {
                 dayHasHolidayEvents = true;
             }
         }
         for (var j = 0; j < otherEvents.length; j++) {
-            if (otherEvents[j]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)) {
+            if (otherEvents[j]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)+ " "+day.date.year().toString()) {
                 dayHasOtherEvents = true;
             }
         }

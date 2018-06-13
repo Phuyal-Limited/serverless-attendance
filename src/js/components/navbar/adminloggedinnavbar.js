@@ -39,6 +39,7 @@ class NavBar extends Component {
             }
         })
             .then(response =>{
+                console.log(response)
                 localStorage.setItem('adminnotification', response.data)
                 let data=JSON.parse(response.data)
 

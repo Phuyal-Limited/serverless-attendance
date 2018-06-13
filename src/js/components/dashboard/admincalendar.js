@@ -460,10 +460,10 @@ class Calendar extends Component{
                 var month=this.state.selectedMonthEvents['date'][i].split(" ");
                 var type=this.state.selectedMonthEvents['eventtype'][i];
                 if(type==="holiday"){
-                    holidayEvents.push(month[0]+" "+month[1])
+                    holidayEvents.push(month[0]+" "+month[1]+" "+month[2])
                 }
                 else{
-                    otherEvents.push(month[0]+" "+month[1])
+                    otherEvents.push(month[0]+" "+month[1]+" "+month[2])
                 }
 
             }
@@ -551,8 +551,9 @@ class Calendar extends Component{
                         placeholder="Event Description"
                         value={this.state.eventdescription}
                         onChange={(event) => this.handleChange(event)}/><br/>
+                    <div className="row">
 
-                    <li className="list-inline-item" style={{margin: 10, padding: 10, paddingLeft: 20, borderRadius: 10, width: 350}}>
+                    <li className="list-inline-item col-md-3" style={{margin: 10, padding: 10, paddingLeft: 20, borderRadius: 10, width: 350}}>
                         <button
                             type="submit"
 
@@ -561,15 +562,16 @@ class Calendar extends Component{
                             <i className="fa fa-level-up fa-fw" />
                             <span className="network-name">{this.state.eventUpdateType} Event</span>
                         </button>
-                    </li><br/>
-                    <li className="list-inline-item" style={{margin: 10, padding: 10, paddingLeft: 20, borderRadius: 10, width: 350}}>
+                    </li>
+                    <li className="list-inline-item col-md-3" style={{margin: 10, padding: 10, paddingLeft: 20, borderRadius: 10, width: 350}}>
                         <button onClick={this.handleCancel}
                                 className="btn btn-default btn-lg"
                         >
                             <i className="fa fa-crosshairs" />
                             <span className="network-name"> Cancel </span>
                         </button>
-                    </li><br/>
+                    </li>
+                    </div>
 
 
                 </form>
@@ -678,12 +680,16 @@ class Calendar extends Component{
                     <NavBar/>
                     <section id="about" className="masthead text-center">
 
-                        <div className="row">
-                            <div className="col-md-7">
-                                {this.renderCalendar()}
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    {this.renderCalendar()}
+                                </div>
                             </div>
-                            <div className="col-md-5">
-                                {this.renderAddEvent()}
+                            <div className="row" style={{paddingTop:15}}>
+                                <div className="col-md-8">
+                                    {this.renderAddEvent()}
+                                </div>
                             </div>
                         </div>
 
@@ -698,41 +704,42 @@ class Calendar extends Component{
                 <div>
                     <NavBar/>
                     <section id="about" className="masthead text-center">
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                {this.renderCalendar()}
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    {this.renderCalendar()}
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <div className="panel shift-left">
-                                    <div className="panel-heading">
-                                        <h3 className="panel-title">Monthly Events</h3>
-                                    </div>
-                                    <div className="panel-body fixed-height panel-white">
-                                        <div className="row">
-                                            <div className="col-md-12">
-                                                <table className="table">
-                                                    <thead>
-                                                    <tr style={{ fontSize:"20px"}}>
-                                                        <th>Date</th>
-                                                        <th>Edit/Delete</th>
-                                                        <th>EventType</th>
-                                                        <th>About</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {this.renderThisMonthsEvents()}
-                                                    </tbody>
+                            <div className="row">
+                                <div className="col-md-8" style={{paddingBottom:40}}>
+                                    <div className="panel">
+                                        <div className="panel-heading">
+                                            <h3 className="panel-title">Monthly Events</h3>
+                                        </div>
+                                        <div className="panel-body fixed-height panel-white">
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <table className="table">
+                                                        <thead>
+                                                        <tr style={{ fontSize:"20px"}}>
+                                                            <th>Date</th>
+                                                            <th>Edit/Delete</th>
+                                                            <th>EventType</th>
+                                                            <th>About</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {this.renderThisMonthsEvents()}
+                                                        </tbody>
 
-                                                </table>
+                                                    </table>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </section>
                 </div>
@@ -845,12 +852,12 @@ class Day extends React.Component {
         var dayHasHolidayEvents = false;
         var dayHasOtherEvents=false;
         for (var i = 0; i < holidayEvents.length; i++) {
-            if (holidayEvents[i]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)) {
+            if (holidayEvents[i]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)+ " "+day.date.year().toString()) {
                 dayHasHolidayEvents = true;
             }
         }
         for (var j = 0; j < otherEvents.length; j++) {
-            if (otherEvents[j]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)) {
+            if (otherEvents[j]===day.date.date().toString()+" "+this.getThisMonth(day.date.month()+1)+ " "+day.date.year().toString()) {
                 dayHasOtherEvents = true;
             }
         }

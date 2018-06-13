@@ -15,6 +15,7 @@ class Notification extends Component{
         super(props);
         this.state={
             notifications: localStorage.getItem('notification'),
+            requeststatus:localStorage.getItem('requeststatus'),
             details:false,
             employeeusername:'',
             leaveid:'',
@@ -25,7 +26,8 @@ class Notification extends Component{
             leavetype:'',
             active:null,
             comments:'',
-            info:''
+            info:'',
+            daysno:''
         };
         this.handleClick=this.handleClick.bind(this);
         this.handleApprove=this.handleApprove.bind(this);
@@ -47,6 +49,7 @@ class Notification extends Component{
             enddate:data[i]['enddate'],
             managerusername:data[i]['managerusername'],
             leavetype:data[i]['leavetype'],
+            daysno:data[i]['daysnumber'],
             active: i
         })
 
@@ -172,31 +175,30 @@ class Notification extends Component{
     render(){
         let notifications=this.state.notifications;
         let tablerows=[]
+
         if (notifications !== "[]") {
             let data = JSON.parse(notifications);
             for (var i = 0; i < data.length; i++) {
-                //let id=data[i]['leaveid']
-                let index=i
-                //let employeeusername=data[i]['employeeusername']
-                let notificationclick= this.handleClick.bind(this, index);
+                let indx=i;
+                let notificationclick= this.handleClick.bind(this, indx);
                 if(i===this.state.active){
                     tablerows.push(
                     <tr key={i} onClick={notificationclick} className="notificationtable selectedrow">
                         <td>{i+1}</td>
                         <td>{data[i]['employeeusername']}</td>
                         <td>{data[i]['date']}</td>
+                        <td>{data[i]['daysnumber']}</td>
                         <td>{data[i]['leavetype']}</td>
                     </tr>
                 )
                 }
                 else {
-
-
                     tablerows.push(
                         <tr key={i} onClick={notificationclick} className="notificationtable">
                             <td>{i + 1}</td>
                             <td>{data[i]['employeeusername']}</td>
                             <td>{data[i]['date']}</td>
+                            <td>{data[i]['daysnumber']}</td>
                             <td>{data[i]['leavetype']}</td>
                         </tr>
                     )
@@ -209,10 +211,11 @@ class Notification extends Component{
             )
 
         }
+
         if(this.state.details) {
             return (
                 <div>
-                    <NavBar/>
+                    <NavBar data={"employee"}/>
                     <section id="about" className="masthead text-center">
                         <div className="intro-body text-center">
                             <div className="container">
@@ -232,6 +235,7 @@ class Notification extends Component{
                                                                     <th>Id</th>
                                                                     <th>Employee</th>
                                                                     <th>Start Date</th>
+                                                                    <th>DaysNo</th>
                                                                     <th>LeaveType</th>
                                                                 </tr>
                                                                 </thead>
@@ -259,6 +263,10 @@ class Notification extends Component{
                                                     <tr>
                                                         <td>Leave End Date</td>
                                                         <td>{this.state.enddate}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total Days</td>
+                                                        <td>{this.state.daysno}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Leave Type</td>
@@ -352,6 +360,7 @@ class Notification extends Component{
                                                                     <th>Id</th>
                                                                     <th>Employee</th>
                                                                     <th>Start Date</th>
+                                                                    <th>DaysNo</th>
                                                                     <th>LeaveType</th>
                                                                 </tr>
                                                                 </thead>

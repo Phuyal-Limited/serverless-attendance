@@ -44,6 +44,7 @@ class NavBar extends Component {
                 //console.log(response.data)
                 let data=JSON.parse(response.data)
                 localStorage.setItem('notification', JSON.stringify(data[0]))
+                localStorage.setItem('requeststatus', JSON.stringify(data[1]))
                 this.setState({
                     notifications:data[0]
                 })
